@@ -3,6 +3,12 @@ import { LightningElement, track, wire } from 'lwc';
 import { NavigationMixin } from 'lightning/navigation';
 import getMiniStats from '@salesforce/apex/GymTrackerController.getMiniStats';
 
+// ── Experience Cloud site page URL ───────────────────────────
+const EXPERIENCE_SITE_URL = 'https://orgfarm-8e2b910f80-dev-ed.develop.my.site.com/assistance/s/personal-assistance-app/gym-progress-tracker';
+
+// ── Internal Salesforce Lightning Tab API name ───────────────
+const INTERNAL_TAB_API = 'Gym_Tracker';
+
 const MILESTONES = [
     { target: 10, icon: '🥉', label: '10 Sessions' },
     { target: 25, icon: '🥈', label: '25 Sessions' },
@@ -39,10 +45,35 @@ export default class GymCard extends NavigationMixin(LightningElement) {
         }));
     }
 
+    // ── Detect if running inside an Experience Cloud site ────
+    get _isExperienceSite() {
+        const url = window.location.href;
+        return (
+            url.includes('.site.com') ||
+            url.includes('/s/') ||
+            url.includes('community') ||
+            url.includes('digitalexperiences.salesforce.com')
+        );
+    }
+
+    // ── Main navigation handler ──────────────────────────────
     openTracker() {
-        this[NavigationMixin.Navigate]({
-            type: 'standard__navItemPage',
-            attributes: { apiName: 'Gym_Tracker' } // ← Your Lightning Tab API name
-        });
+        if (this._isExperienceSite) {
+            // ── Experience Cloud → Navigate to site page ──────
+            this[NavigationMixin.Navigate]({
+                type: 'standard__webPage',
+                attributes: {
+                    url: EXPERIENCE_SITE_URL
+                }
+            });
+        } else {
+            // ── Internal Salesforce → Navigate to Lightning Tab
+            this[NavigationMixin.Navigate]({
+                type: 'standard__navItemPage',
+                attributes: {
+                    apiName: INTERNAL_TAB_API
+                }
+            });
+        }
     }
 }

@@ -6,13 +6,14 @@
         <div class="gym-header">
             <div class="gym-header-left">
                 <div class="gym-logo">🏋️</div>
-                <div>
+                <div class="gym-header-text">
                     <div class="gym-eyebrow">Personal Fitness</div>
                     <div class="gym-title">Gym Attendance Tracker</div>
                 </div>
             </div>
             <button class="add-btn" onclick={openModal} title="Log Today's Workout">
-                <span class="add-icon">＋</span> Log Workout
+                <span class="add-icon">＋</span>
+                <span class="add-label">Log Workout</span>
             </button>
         </div>
 
@@ -67,7 +68,7 @@
             <div class="date-filters">
                 <input class="date-input" type="date" value={filterFrom} onchange={handleFilterFrom} title="From date"/>
                 <span class="date-sep">→</span>
-                <input class="date-input" type="date" value={filterTo}   onchange={handleFilterTo}   title="To date"/>
+                <input class="date-input" type="date" value={filterTo} onchange={handleFilterTo} title="To date"/>
                 <button class="clear-filter-btn" onclick={clearFilters} title="Clear filters">↺</button>
             </div>
             <div class="type-filter">
@@ -95,51 +96,77 @@
 
             <template lwc:else>
                 <template lwc:if={hasLogs}>
-                    <table class="gym-table">
-                        <thead>
-                            <tr>
-                                <th class="th-num">#</th>
-                                <th class="th-sortable" data-col="Log_Date__c" onclick={handleSort}>
-                                    Date {sortIcons.Log_Date__c}
-                                </th>
-                                <th class="th-sortable" data-col="Duration__c" onclick={handleSort}>
-                                    Duration {sortIcons.Duration__c}
-                                </th>
-                                <th class="th-sortable" data-col="Workout_Type__c" onclick={handleSort}>
-                                    Type {sortIcons.Workout_Type__c}
-                                </th>
-                                <th>Mood</th>
-                                <th>Comments</th>
-                                <th class="th-action">Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <template for:each={displayedLogs} for:item="log">
-                                <tr key={log.Id} class={log.rowCls}>
-                                    <td class="td-num">{log.rowNum}</td>
-                                    <td class="td-date">
-                                        <span class="date-badge">{log.formattedDate}</span>
-                                    </td>
-                                    <td class="td-duration">
-                                        <span class="duration-chip">{log.Duration__c} min</span>
-                                    </td>
-                                    <td>
-                                        <span class={log.typeCls}>{log.Workout_Type__c}</span>
-                                    </td>
-                                    <td>
-                                        <span class={log.moodCls}>{log.moodLabel}</span>
-                                    </td>
-                                    <td class="td-comments">{log.Comments__c}</td>
-                                    <td class="td-action">
-                                        <button class="delete-btn"
-                                            data-id={log.Id}
-                                            onclick={handleDeleteClick}
-                                            title="Delete">🗑️</button>
-                                    </td>
+
+                    <!-- Desktop Table -->
+                    <div class="desktop-table">
+                        <table class="gym-table">
+                            <thead>
+                                <tr>
+                                    <th class="th-num">#</th>
+                                    <th class="th-sortable" data-col="Log_Date__c" onclick={handleSort}>
+                                        Date {sortIcons.Log_Date__c}
+                                    </th>
+                                    <th class="th-sortable" data-col="Duration__c" onclick={handleSort}>
+                                        Duration {sortIcons.Duration__c}
+                                    </th>
+                                    <th class="th-sortable" data-col="Workout_Type__c" onclick={handleSort}>
+                                        Type {sortIcons.Workout_Type__c}
+                                    </th>
+                                    <th>Mood</th>
+                                    <th>Comments</th>
+                                    <th class="th-action">Action</th>
                                 </tr>
-                            </template>
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody>
+                                <template for:each={displayedLogs} for:item="log">
+                                    <tr key={log.Id} class={log.rowCls}>
+                                        <td class="td-num">{log.rowNum}</td>
+                                        <td class="td-date">
+                                            <span class="date-badge">{log.formattedDate}</span>
+                                        </td>
+                                        <td class="td-duration">
+                                            <span class="duration-chip">{log.Duration__c} min</span>
+                                        </td>
+                                        <td><span class={log.typeCls}>{log.Workout_Type__c}</span></td>
+                                        <td><span class={log.moodCls}>{log.moodLabel}</span></td>
+                                        <td class="td-comments">{log.Comments__c}</td>
+                                        <td class="td-action">
+                                            <button class="delete-btn"
+                                                data-id={log.Id}
+                                                onclick={handleDeleteClick}
+                                                title="Delete">🗑️</button>
+                                        </td>
+                                    </tr>
+                                </template>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Mobile Cards -->
+                    <div class="mobile-cards">
+                        <template for:each={displayedLogs} for:item="log">
+                            <div key={log.Id} class="log-card">
+                                <div class="log-card-top">
+                                    <div class="log-card-left">
+                                        <span class="date-badge">{log.formattedDate}</span>
+                                        <span class="log-card-num">#{log.rowNum}</span>
+                                    </div>
+                                    <button class="delete-btn"
+                                        data-id={log.Id}
+                                        onclick={handleDeleteClick}
+                                        title="Delete">🗑️</button>
+                                </div>
+                                <div class="log-card-chips">
+                                    <span class="duration-chip">{log.Duration__c} min</span>
+                                    <span class={log.typeCls}>{log.Workout_Type__c}</span>
+                                    <span class={log.moodCls}>{log.moodLabel}</span>
+                                </div>
+                                <template lwc:if={log.Comments__c}>
+                                    <div class="log-card-comments">{log.Comments__c}</div>
+                                </template>
+                            </div>
+                        </template>
+                    </div>
 
                     <!-- Pagination -->
                     <div class="pagination">
@@ -168,22 +195,22 @@
                         <div class="modal-title">🏋️ Log Workout</div>
                         <button class="modal-close" onclick={closeModal}>✕</button>
                     </div>
-
                     <div class="modal-body">
-                        <!-- Date -->
                         <div class="field-row">
                             <label class="field-label">📅 Date <span class="required">*</span></label>
-                            <input class="field-input" type="date" value={form.logDate} data-field="logDate" onchange={handleFormChange}/>
+                            <input class="field-input" type="date" value={form.logDate}
+                                data-field="logDate" onchange={handleFormChange}/>
                         </div>
-                        <!-- Duration -->
                         <div class="field-row">
                             <label class="field-label">⏱️ Duration (minutes) <span class="required">*</span></label>
-                            <input class="field-input" type="number" min="1" max="300" placeholder="e.g. 60" value={form.duration} data-field="duration" onchange={handleFormChange}/>
+                            <input class="field-input" type="number" min="1" max="300"
+                                placeholder="e.g. 60" value={form.duration}
+                                data-field="duration" onchange={handleFormChange}/>
                         </div>
-                        <!-- Workout Type -->
                         <div class="field-row">
                             <label class="field-label">💪 Workout Type</label>
-                            <select class="field-input" value={form.workoutType} data-field="workoutType" onchange={handleFormChange}>
+                            <select class="field-input" value={form.workoutType}
+                                data-field="workoutType" onchange={handleFormChange}>
                                 <option value="">-- Select --</option>
                                 <option value="Strength">💪 Strength</option>
                                 <option value="Cardio">🏃 Cardio</option>
@@ -193,35 +220,28 @@
                                 <option value="Rest Day">😴 Rest Day</option>
                             </select>
                         </div>
-                        <!-- Mood -->
                         <div class="field-row">
                             <label class="field-label">😊 Mood</label>
                             <div class="mood-grid">
                                 <template for:each={moodOptions} for:item="m">
-                                    <button key={m.value}
-                                        class={m.cls}
-                                        data-mood={m.value}
-                                        onclick={handleMoodSelect}>
+                                    <button key={m.value} class={m.cls}
+                                        data-mood={m.value} onclick={handleMoodSelect}>
                                         {m.label}
                                     </button>
                                 </template>
                             </div>
                         </div>
-                        <!-- Comments -->
                         <div class="field-row">
                             <label class="field-label">📝 Comments</label>
                             <textarea class="field-textarea" rows="4"
                                 placeholder="What did you work on? Any PRs today?"
-                                value={form.comments}
-                                data-field="comments"
+                                value={form.comments} data-field="comments"
                                 onchange={handleFormChange}></textarea>
                         </div>
-
                         <template lwc:if={formError}>
                             <div class="form-error">⚠️ {formError}</div>
                         </template>
                     </div>
-
                     <div class="modal-footer">
                         <button class="modal-cancel-btn" onclick={closeModal}>Cancel</button>
                         <button class="modal-save-btn" onclick={handleSave} disabled={isSaving}>

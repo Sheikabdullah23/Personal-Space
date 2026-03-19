@@ -21,7 +21,7 @@
                     <!-- Logo + Title -->
                     <div class="header-left">
                         <div class="sf-logo">SF</div>
-                        <div>
+                        <div class="header-text">
                             <div class="header-eyebrow">Complete Developer Journey</div>
                             <div class="header-title">Salesforce Developer Roadmap</div>
                         </div>
@@ -31,7 +31,7 @@
                     <div class="header-right">
                         <div class="overall-stats">
                             <div class="overall-label">Overall Progress</div>
-                            <div class="overall-count">{doneAll} / {totalAll} topics</div>
+                            <div class="overall-count">{doneAll} / {totalAll}</div>
                             <button class="reset-btn" onclick={openResetModal}>Reset All</button>
                         </div>
                         <div class="ring-wrap">
@@ -48,15 +48,29 @@
                     </div>
                 </div>
 
-                <!-- Level Tabs -->
+                <!-- Level Tabs — horizontally scrollable on mobile -->
                 <div class="level-tabs">
                     <template for:each={levels} for:item="lv">
-                        <button key={lv.id}
-                            class={lv.tabCls}
-                            data-id={lv.id}
-                            onclick={handleLevelChange}>
+                        <button key={lv.id} class={lv.tabCls}
+                            data-id={lv.id} onclick={handleLevelChange}>
                             {lv.emoji}&nbsp;{lv.label}
                             <span class={lv.tagCls}>{lv.tag}</span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════
+                 MOBILE MODULE PICKER (replaces sidebar on small screens)
+            ══════════════════════════════ -->
+            <div class="mobile-module-picker">
+                <div class="mobile-module-scroll">
+                    <template for:each={clouds} for:item="cl">
+                        <button key={cl.id} class={cl.mobileNavCls}
+                            data-id={cl.id} onclick={handleCloudChange}>
+                            <span>{cl.icon}</span>
+                            <span class="mobile-cloud-name">{cl.name}</span>
+                            <span class="mobile-cloud-pct">{cl.pct}%</span>
                         </button>
                     </template>
                 </div>
@@ -67,15 +81,13 @@
             ══════════════════════════════ -->
             <div class="body-grid">
 
-                <!-- ── Sidebar ── -->
+                <!-- ── Sidebar (desktop only) ── -->
                 <div class="sidebar">
                     <div class="sidebar-heading">Modules</div>
 
                     <template for:each={clouds} for:item="cl">
-                        <button key={cl.id}
-                            class={cl.navCls}
-                            data-id={cl.id}
-                            onclick={handleCloudChange}>
+                        <button key={cl.id} class={cl.navCls}
+                            data-id={cl.id} onclick={handleCloudChange}>
                             <span class="cloud-icon">{cl.icon}</span>
                             <div class="cloud-info">
                                 <div class={cl.nameCls}>{cl.name}</div>
@@ -118,10 +130,6 @@
                                 <svg width="56" height="56" class="ring-svg">
                                     <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(255,255,255,0.05)"
                                         stroke-width="4" />
-                                    <!-- <circle cx="28" cy="28" r="24" fill="none" stroke={activeLevelColor}
-                                        stroke-width="4" stroke-linecap="round" stroke-dasharray="150.8"
-                                        stroke-dashoffset={moduleRingOffset} style="transition:stroke-dashoffset .6s;"
-                                        transform="rotate(-90 28 28)" /> -->
                                 </svg>
                                 <span class="ring-pct-lg" style={levelColorStyle}>{modulePct}%</span>
                             </div>
@@ -149,7 +157,6 @@
                                 <template for:each={phase.topics} for:item="topic">
                                     <div key={topic.topicKey} class={topic.topicCls}>
 
-                                        <!-- Topic Row -->
                                         <div class="topic-row" data-key={topic.topicKey} onclick={handleTopicExpand}>
                                             <div class={topic.checkCls} data-key={topic.topicKey}
                                                 onclick={handleTopicToggle}>
@@ -159,7 +166,6 @@
                                             <span class={topic.arrowCls}>▶</span>
                                         </div>
 
-                                        <!-- Detail -->
                                         <template lwc:if={topic.expanded}>
                                             <div class="topic-detail" style={topicDetailBorderStyle}>
                                                 {topic.detail}
@@ -210,7 +216,7 @@
                                 value={resetPassword}
                                 placeholder="Enter password..."
                                 onchange={handlePasswordChange}
-                                onkeydown={handlePasswordKeydown}/>
+                                onkeydown={handlePasswordKeydown} />
                             <button class="eye-btn" onclick={togglePasswordVisibility}>
                                 <template lwc:if={showPassword}>🙈</template>
                                 <template lwc:else>👁️</template>
@@ -229,7 +235,7 @@
                  BOTTOM BAR
             ══════════════════════════════ -->
             <div class="bottom-bar">
-                <span class="bottom-label">Level Progress</span>
+                <span class="bottom-label">Progress</span>
                 <div class="bottom-bars">
                     <template for:each={clouds} for:item="cl">
                         <div key={cl.id} class="bottom-bar-track" title={cl.barTitle} data-id={cl.id}
@@ -238,7 +244,7 @@
                         </div>
                     </template>
                 </div>
-                <span class="bottom-stats">7 Modules · 21 Phases · {totalAll} Topics</span>
+                <span class="bottom-stats">{totalAll} Topics</span>
             </div>
 
         </template>

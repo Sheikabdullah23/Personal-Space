@@ -785,6 +785,8 @@ export default class SfRoadmap extends LightningElement {
                 barStyle: `width:${pct}%; background:${ac};`,
                 bottomBarStyle: `width:${pct}%; background:${isA ? ac : ac + '60'};`,
                 barTitle: `${c.name}: ${list.length}/${total}`,
+                // ── NEW: mobile nav pill class ──
+                mobileNavCls: `mobile-cloud-btn${isA ? ' mobile-active' : ''}`,
             };
         });
     }

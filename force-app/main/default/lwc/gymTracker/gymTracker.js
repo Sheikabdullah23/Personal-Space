@@ -165,17 +165,37 @@ export default class GymTracker extends LightningElement {
 
     get currentStreak() {
         if (!this.rawLogs.length) return 0;
-        const sorted = [...this.rawLogs].sort((a, b) =>
-            a.Log_Date__c > b.Log_Date__c ? -1 : 1);
-        let streak = 0;
-        let expected = new Date().toISOString().split('T')[0];
-        for (const l of sorted) {
-            if (l.Log_Date__c === expected ||
-                l.Log_Date__c === this._addDays(expected, -1)) {
-                streak++;
-                expected = this._addDays(l.Log_Date__c, -1);
-            } else break;
+
+        // 1. Get unique dates only (deduplicate if multiple logs same day)
+        const uniqueDates = [...new Set(this.rawLogs.map(l => l.Log_Date__c))]
+            .filter(Boolean)
+            .sort()       // ascending: oldest → newest
+            .reverse();   // descending: newest → oldest
+
+        const today = new Date().toISOString().split('T')[0];
+        const yesterday = this._addDays(today, -1);
+
+        // 2. Streak must start from today OR yesterday (grace for end-of-day logging)
+        //    If the most recent log is older than yesterday → streak is 0
+        if (uniqueDates[0] !== today && uniqueDates[0] !== yesterday) {
+            return 0;
         }
+
+        // 3. Walk backwards: each date must be exactly 1 day before the previous
+        let streak = 1;
+        let prevDate = uniqueDates[0];
+
+        for (let i = 1; i < uniqueDates.length; i++) {
+            const expected = this._addDays(prevDate, -1);
+            if (uniqueDates[i] === expected) {
+                streak++;
+                prevDate = uniqueDates[i];
+            } else {
+                // Gap found — streak ends here
+                break;
+            }
+        }
+
         return streak;
     }
 

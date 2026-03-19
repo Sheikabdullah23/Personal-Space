@@ -16,14 +16,16 @@
     align-items: center;
     justify-content: space-between;
     margin-bottom: 22px;
-    flex-wrap: wrap;
     gap: 12px;
+    flex-wrap: wrap;
 }
 
 .gym-header-left {
     display: flex;
     align-items: center;
     gap: 14px;
+    min-width: 0;
+    flex: 1;
 }
 
 .gym-logo {
@@ -37,6 +39,10 @@
     font-size: 22px;
     box-shadow: 0 0 20px rgba(245, 158, 11, 0.4);
     flex-shrink: 0;
+}
+
+.gym-header-text {
+    min-width: 0;
 }
 
 .gym-eyebrow {
@@ -68,6 +74,8 @@
     cursor: pointer;
     box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35);
     transition: transform .18s, box-shadow .18s;
+    white-space: nowrap;
+    flex-shrink: 0;
 }
 
 .add-btn:hover {
@@ -78,6 +86,10 @@
 .add-icon {
     font-size: 18px;
     font-weight: 900;
+}
+
+.add-label {
+    /* visible on desktop, hidden on mobile via media query */
 }
 
 /* ══ STATS BAR ══ */
@@ -281,7 +293,7 @@
     white-space: nowrap;
 }
 
-/* ══ TABLE ══ */
+/* ══ TABLE WRAP ══ */
 .table-wrap {
     background: #0c1220;
     border: 1px solid rgba(255, 255, 255, 0.05);
@@ -312,6 +324,11 @@
     to {
         transform: rotate(360deg);
     }
+}
+
+/* ── Desktop table — always visible, hidden only on mobile ── */
+.desktop-table {
+    display: block;
 }
 
 .gym-table {
@@ -380,10 +397,7 @@
     font-weight: 700;
 }
 
-.td-date {
-    white-space: nowrap;
-}
-
+.td-date,
 .td-duration {
     white-space: nowrap;
 }
@@ -401,7 +415,56 @@
     text-align: center;
 }
 
-/* Date badge */
+/* ── Mobile cards — hidden on desktop, shown on mobile ── */
+.mobile-cards {
+    display: none;
+    padding: 12px;
+}
+
+.log-card {
+    background: rgba(255, 255, 255, 0.025);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 12px;
+    padding: 14px;
+    margin-bottom: 10px;
+}
+
+.log-card-top {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+}
+
+.log-card-left {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.log-card-num {
+    font-size: 10px;
+    color: #3a4a5e;
+    font-weight: 700;
+}
+
+.log-card-chips {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    margin-bottom: 6px;
+}
+
+.log-card-comments {
+    font-size: 12px;
+    color: #7a8ea8;
+    line-height: 1.5;
+    border-top: 1px solid rgba(255, 255, 255, 0.05);
+    padding-top: 8px;
+    margin-top: 4px;
+}
+
+/* ══ CHIPS ══ */
 .date-badge {
     background: rgba(0, 161, 224, 0.1);
     border: 1px solid rgba(0, 161, 224, 0.25);
@@ -413,7 +476,6 @@
     white-space: nowrap;
 }
 
-/* Duration chip */
 .duration-chip {
     background: rgba(168, 85, 247, 0.1);
     border: 1px solid rgba(168, 85, 247, 0.25);
@@ -424,7 +486,6 @@
     color: #a855f7;
 }
 
-/* Workout type chips */
 .type-chip {
     border-radius: 6px;
     padding: 3px 9px;
@@ -469,7 +530,6 @@
     color: #94a3b8;
 }
 
-/* Mood chips */
 .mood-chip {
     border-radius: 6px;
     padding: 3px 9px;
@@ -502,7 +562,6 @@
     color: #94a3b8;
 }
 
-/* Delete button */
 .delete-btn {
     background: rgba(239, 68, 68, 0.08);
     border: 1px solid rgba(239, 68, 68, 0.2);
@@ -576,7 +635,7 @@
     color: #4a5a70;
 }
 
-/* ══ MODAL ══ */
+/* ══ MODAL — Desktop: centered popup ══ */
 .modal-overlay {
     position: fixed;
     inset: 0;
@@ -586,6 +645,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
+    padding: 16px;
 }
 
 .modal-box {
@@ -682,7 +742,6 @@
     min-height: 90px;
 }
 
-/* Mood grid */
 .mood-grid {
     display: flex;
     gap: 8px;
@@ -720,7 +779,6 @@
     margin-top: 8px;
 }
 
-/* Modal buttons */
 .modal-cancel-btn {
     flex: 1;
     padding: 12px 0;
@@ -768,9 +826,207 @@
     cursor: pointer;
 }
 
-/* Delete confirm */
 .delete-confirm-text {
     font-size: 14px;
     color: #8a9ab0;
     line-height: 1.6;
+}
+
+
+/* ══════════════════════════════════════════
+   RESPONSIVE — only override what changes
+══════════════════════════════════════════ */
+
+/* ── Tablet (≤ 800px) ── */
+@media (max-width: 800px) {
+    .gym-root {
+        padding: 18px 16px 80px;
+    }
+
+    .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+
+    .stat-num {
+        font-size: 22px;
+    }
+
+    .filter-bar {
+        gap: 8px;
+    }
+
+    .search-wrap {
+        min-width: 160px;
+    }
+
+    .date-filters {
+        flex-wrap: wrap;
+    }
+}
+
+/* ── Mobile (≤ 580px) ── */
+@media (max-width: 580px) {
+    .gym-root {
+        padding: 14px 12px 80px;
+    }
+
+    .gym-title {
+        font-size: 16px;
+    }
+
+    .gym-eyebrow {
+        font-size: 9px;
+    }
+
+    .add-btn {
+        padding: 10px 14px;
+        font-size: 13px;
+    }
+
+    /* Stats 2×2 */
+    .stats-bar {
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+    }
+
+    .stat-card {
+        padding: 12px 8px;
+    }
+
+    .stat-icon {
+        font-size: 18px;
+    }
+
+    .stat-num {
+        font-size: 20px;
+    }
+
+    .stat-label {
+        font-size: 9px;
+    }
+
+    /* Milestones: scroll horizontally */
+    .milestones-row {
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+        scrollbar-width: none;
+        padding-bottom: 2px;
+    }
+
+    .milestones-row::-webkit-scrollbar {
+        display: none;
+    }
+
+    .badge {
+        flex-shrink: 0;
+    }
+
+    /* Filter: stack on mobile */
+    .filter-bar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 8px;
+    }
+
+    .search-wrap {
+        min-width: unset;
+    }
+
+    .date-filters {
+        justify-content: space-between;
+    }
+
+    .date-input {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .type-select {
+        width: 100%;
+    }
+
+    /* Hide desktop table, show card list */
+    .desktop-table {
+        display: none;
+    }
+
+    .mobile-cards {
+        display: block;
+    }
+
+    /* Modal: bottom sheet on mobile */
+    .modal-overlay {
+        align-items: flex-end;
+        padding: 0;
+    }
+
+    .modal-box {
+        width: 100%;
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+        max-height: 88vh;
+    }
+
+    .modal-box.modal-small {
+        max-width: 100%;
+        border-radius: 20px 20px 0 0;
+    }
+
+    .modal-header {
+        padding: 18px 16px 0;
+    }
+
+    .modal-body {
+        padding: 16px 16px;
+    }
+
+    .modal-footer {
+        padding: 0 16px 24px;
+    }
+
+    /* Prevent iOS zoom on input focus (font-size must be ≥ 16px) */
+    .field-input,
+    .field-textarea,
+    .type-select {
+        font-size: 16px;
+    }
+
+    /* Pagination tap targets */
+    .page-btn {
+        padding: 10px 20px;
+        min-height: 44px;
+    }
+
+    .delete-btn {
+        min-width: 40px;
+        min-height: 40px;
+    }
+}
+
+/* ── Very small (≤ 360px) ── */
+@media (max-width: 360px) {
+    .gym-logo {
+        width: 36px;
+        height: 36px;
+        font-size: 17px;
+    }
+
+    .gym-title {
+        font-size: 14px;
+    }
+
+    .add-label {
+        display: none;
+    }
+
+    .stat-num {
+        font-size: 18px;
+    }
+
+    .mood-option {
+        padding: 7px 10px;
+        font-size: 12px;
+    }
 }
