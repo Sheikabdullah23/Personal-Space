@@ -1,0 +1,131 @@
+<!-- countdownTimer.html -->
+<template>
+    <div class="timer-wrapper">
+
+        <!-- ── Header ── -->
+        <div class="timer-header">
+            <div class="header-icon">⚡</div>
+            <div>
+                <div class="header-eyebrow">Salesforce Learning Challenge</div>
+                <div class="header-title">{goalLabel}</div>
+            </div>
+            <button class="settings-btn" onclick={toggleSettings} title="Settings">⚙️</button>
+        </div>
+
+        <!-- ── Settings Panel ── -->
+        <template if:true={showSettings}>
+            <div class="settings-panel">
+                <div class="settings-title">⚙️ Configure Your Goal</div>
+                <div class="settings-row">
+                    <label class="settings-label">Goal Name</label>
+                    <input class="settings-input" type="text" value={goalLabel} onchange={handleGoalLabel} placeholder="e.g. Salesforce 100 Day Challenge" maxlength="40" />
+                </div>
+                <div class="settings-row">
+                    <label class="settings-label">Total Days</label>
+                    <input class="settings-input small" type="number" value={totalDays} onchange={handleTotalDays} min="1" max="365" />
+                </div>
+                <div class="settings-row">
+                    <label class="settings-label">Start Date</label>
+                    <input class="settings-input small" type="date" value={startDate} onchange={handleStartDate} />
+                </div>
+                <div class="settings-row">
+                    <label class="settings-label">Daily Goal</label>
+                    <input class="settings-input" type="text" value={dailyGoal} onchange={handleDailyGoal} placeholder="e.g. Study 2 hours of Salesforce" maxlength="60" />
+                </div>
+                <button class="save-btn" onclick={saveSettings}>💾 Save & Start</button>
+            </div>
+        </template>
+
+        <!-- ── Main Countdown ── -->
+        <template if:false={showSettings}>
+
+            <!-- Big Ring -->
+            <div class="ring-container">
+                <svg class="progress-ring" viewBox="0 0 220 220">
+                    <!-- Background ring -->
+                    <circle cx="110" cy="110" r="96" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="10" />
+                    <!-- Progress arc -->
+                    <circle cx="110" cy="110" r="96" fill="none" stroke="url(#arcGrad)" stroke-width="10"
+                        stroke-linecap="round" stroke-dasharray={circumference} stroke-dashoffset={strokeOffset}
+                        style="transition: stroke-dashoffset 1s ease;" transform="rotate(-90 110 110)" />
+                    <!-- Gradient def -->
+                    <defs>
+                        <linearGradient id="arcGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+                            <stop offset="0%" stop-color="#00a1e0" />
+                            <stop offset="100%" stop-color="#a855f7" />
+                        </linearGradient>
+                    </defs>
+                </svg>
+
+                <div class="ring-inner">
+                    <div class="days-number">{daysLeft}</div>
+                    <div class="days-label">DAYS LEFT</div>
+                    <div class="percent-badge">{percentDone}% done</div>
+                </div>
+            </div>
+
+            <!-- HH:MM:SS live clock -->
+            <div class="live-clock">
+                <div class="clock-block">
+                    <span class="clock-num">{hours}</span>
+                    <span class="clock-unit">HRS</span>
+                </div>
+                <span class="clock-sep">:</span>
+                <div class="clock-block">
+                    <span class="clock-num">{minutes}</span>
+                    <span class="clock-unit">MIN</span>
+                </div>
+                <span class="clock-sep">:</span>
+                <div class="clock-block">
+                    <span class="clock-num">{seconds}</span>
+                    <span class="clock-unit">SEC</span>
+                </div>
+            </div>
+
+            <!-- Stats Row -->
+            <div class="stats-row">
+                <div class="stat-box">
+                    <div class="stat-num">{daysPassed}</div>
+                    <div class="stat-label">Days Done</div>
+                </div>
+                <div class="stat-box highlight">
+                    <div class="stat-num">{totalDays}</div>
+                    <div class="stat-label">Total Days</div>
+                </div>
+                <div class="stat-box">
+                    <div class="stat-num">{deadlineFormatted}</div>
+                    <div class="stat-label">Deadline</div>
+                </div>
+            </div>
+
+            <!-- Daily Goal -->
+            <div class="daily-goal-box">
+                <span class="daily-goal-icon">🎯</span>
+                <span class="daily-goal-text">{dailyGoal}</span>
+            </div>
+
+            <!-- Motivation -->
+            <div class="motivation-box">
+                <span class="motivation-text">{motivationQuote}</span>
+            </div>
+
+            <!-- Milestone bar -->
+            <div class="milestone-row">
+                <template for:each={milestones} for:item="m">
+                    <div key={m.label} class={m.cls} title={m.label}>
+                        <div class="milestone-dot"></div>
+                        <div class="milestone-label">{m.label}</div>
+                    </div>
+                </template>
+            </div>
+
+        </template>
+
+        <!-- Footer -->
+        <div class="timer-footer">
+            <span class="footer-dot" style={footerDotStyle}></span>
+            {statusText}
+        </div>
+
+    </div>
+</template>

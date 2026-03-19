@@ -1,0 +1,56 @@
+<!-- force-app/main/default/lwc/gymCard/gymCard.html -->
+<template>
+    <div class="gym-card-wrapper">
+
+        <!-- Header -->
+        <div class="gc-header">
+            <div class="gc-logo">🏋️</div>
+            <div>
+                <div class="gc-eyebrow">Personal Fitness</div>
+                <div class="gc-title">Gym Tracker</div>
+            </div>
+        </div>
+
+        <div class="gc-divider"></div>
+
+        <!-- Mini Stats -->
+        <template lwc:if={isLoading}>
+            <div class="gc-loading">Loading stats...</div>
+        </template>
+
+        <template lwc:else>
+            <div class="gc-stats">
+                <div class="gc-stat">
+                    <div class="gc-stat-num">{totalSessions}</div>
+                    <div class="gc-stat-label">Sessions</div>
+                </div>
+                <div class="gc-stat-divider"></div>
+                <div class="gc-stat">
+                    <div class="gc-stat-num">{totalHours}h</div>
+                    <div class="gc-stat-label">Total Hours</div>
+                </div>
+                <div class="gc-stat-divider"></div>
+                <div class="gc-stat gc-stat-streak">
+                    <div class="gc-stat-num">🔥 {currentStreak}</div>
+                    <div class="gc-stat-label">Day Streak</div>
+                </div>
+            </div>
+
+            <!-- Milestone mini row -->
+            <div class="gc-badges">
+                <template for:each={milestones} for:item="m">
+                    <span key={m.label} class={m.cls} title={m.title}>{m.icon}</span>
+                </template>
+            </div>
+        </template>
+
+        <div class="gc-divider"></div>
+
+        <!-- CTA Button -->
+        <button class="gc-btn" onclick={openTracker}>
+            <span>Open Gym Tracker</span>
+            <span class="gc-btn-arrow">↗</span>
+        </button>
+
+    </div>
+</template>

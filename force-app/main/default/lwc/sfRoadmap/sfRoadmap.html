@@ -1,0 +1,246 @@
+<!-- force-app/main/default/lwc/sfRoadmap/sfRoadmap.html -->
+<template>
+    <div class="roadmap-root">
+
+        <!-- ── Loading Spinner ── -->
+        <template lwc:if={isLoading}>
+            <div class="loading-screen">
+                <div class="spinner"></div>
+                <div class="loading-text">Loading your progress...</div>
+            </div>
+        </template>
+
+        <template lwc:else>
+
+            <!-- ══════════════════════════════
+                 STICKY HEADER
+            ══════════════════════════════ -->
+            <div class="sticky-header">
+                <div class="header-inner">
+
+                    <!-- Logo + Title -->
+                    <div class="header-left">
+                        <div class="sf-logo">SF</div>
+                        <div>
+                            <div class="header-eyebrow">Complete Developer Journey</div>
+                            <div class="header-title">Salesforce Developer Roadmap</div>
+                        </div>
+                    </div>
+
+                    <!-- Overall Progress -->
+                    <div class="header-right">
+                        <div class="overall-stats">
+                            <div class="overall-label">Overall Progress</div>
+                            <div class="overall-count">{doneAll} / {totalAll} topics</div>
+                            <button class="reset-btn" onclick={openResetModal}>Reset All</button>
+                        </div>
+                        <div class="ring-wrap">
+                            <svg width="46" height="46" class="ring-svg">
+                                <circle cx="23" cy="23" r="19" fill="none" stroke="rgba(255,255,255,0.06)"
+                                    stroke-width="3" />
+                                <circle cx="23" cy="23" r="19" fill="none" stroke="#00a1e0" stroke-width="3"
+                                    stroke-linecap="round" stroke-dasharray="119.38"
+                                    stroke-dashoffset={overallRingOffset} style="transition:stroke-dashoffset .6s;"
+                                    transform="rotate(-90 23 23)" />
+                            </svg>
+                            <span class="ring-pct">{overallPct}%</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Level Tabs -->
+                <div class="level-tabs">
+                    <template for:each={levels} for:item="lv">
+                        <button key={lv.id}
+                            class={lv.tabCls}
+                            data-id={lv.id}
+                            onclick={handleLevelChange}>
+                            {lv.emoji}&nbsp;{lv.label}
+                            <span class={lv.tagCls}>{lv.tag}</span>
+                        </button>
+                    </template>
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════
+                 BODY (Sidebar + Main)
+            ══════════════════════════════ -->
+            <div class="body-grid">
+
+                <!-- ── Sidebar ── -->
+                <div class="sidebar">
+                    <div class="sidebar-heading">Modules</div>
+
+                    <template for:each={clouds} for:item="cl">
+                        <button key={cl.id}
+                            class={cl.navCls}
+                            data-id={cl.id}
+                            onclick={handleCloudChange}>
+                            <span class="cloud-icon">{cl.icon}</span>
+                            <div class="cloud-info">
+                                <div class={cl.nameCls}>{cl.name}</div>
+                                <div class="cloud-bar-track">
+                                    <div class="cloud-bar-fill" style={cl.barStyle}></div>
+                                </div>
+                            </div>
+                            <span class={cl.pctCls}>{cl.pct}%</span>
+                        </button>
+                    </template>
+
+                    <!-- Level Info Card -->
+                    <div class="level-info-card" style={levelCardStyle}>
+                        <div class="level-info-title" style={levelColorStyle}>
+                            {activeLevelEmoji}&nbsp;{activeLevelLabel} Level
+                        </div>
+                        <div class="level-info-body">{levelDescription}</div>
+                    </div>
+                </div>
+
+                <!-- ── Main Content ── -->
+                <div class="main-content">
+
+                    <!-- Cloud Header -->
+                    <div class="cloud-header" style={cloudHeaderStyle}>
+                        <div class="cloud-header-left">
+                            <div class="cloud-icon-big" style={cloudIconStyle}>{activeCloudIcon}</div>
+                            <div>
+                                <div class="cloud-name">{activeCloudName}</div>
+                                <div class="cloud-cert">🎓 {activeCloudCert}</div>
+                            </div>
+                        </div>
+                        <div class="cloud-header-right">
+                            <div class="module-stats">
+                                <div class="module-stats-label">Module Progress</div>
+                                <div class="module-pct-num" style={levelColorStyle}>{modulePct}%</div>
+                                <div class="module-topic-count">{moduleDone}/{moduleTotal} topics</div>
+                            </div>
+                            <div class="ring-wrap">
+                                <svg width="56" height="56" class="ring-svg">
+                                    <circle cx="28" cy="28" r="24" fill="none" stroke="rgba(255,255,255,0.05)"
+                                        stroke-width="4" />
+                                    <!-- <circle cx="28" cy="28" r="24" fill="none" stroke={activeLevelColor}
+                                        stroke-width="4" stroke-linecap="round" stroke-dasharray="150.8"
+                                        stroke-dashoffset={moduleRingOffset} style="transition:stroke-dashoffset .6s;"
+                                        transform="rotate(-90 28 28)" /> -->
+                                </svg>
+                                <span class="ring-pct-lg" style={levelColorStyle}>{modulePct}%</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Phases -->
+                    <template for:each={activePhases} for:item="phase">
+                        <div key={phase.phaseKey} class="phase-card">
+
+                            <!-- Phase Header -->
+                            <div class="phase-header" style={phaseHeaderStyle}>
+                                <div class="phase-badge" style={phaseBadgeStyle}>{phase.phaseNum}</div>
+                                <div class="phase-info">
+                                    <div class="phase-name">{phase.phase}</div>
+                                    <div class="phase-bar-track">
+                                        <div class="phase-bar-fill" style={phase.phaseBarStyle}></div>
+                                    </div>
+                                </div>
+                                <span class={phase.phaseDoneCls}>{phase.phaseDoneLabel}</span>
+                            </div>
+
+                            <!-- Topics -->
+                            <div class="topics-list">
+                                <template for:each={phase.topics} for:item="topic">
+                                    <div key={topic.topicKey} class={topic.topicCls}>
+
+                                        <!-- Topic Row -->
+                                        <div class="topic-row" data-key={topic.topicKey} onclick={handleTopicExpand}>
+                                            <div class={topic.checkCls} data-key={topic.topicKey}
+                                                onclick={handleTopicToggle}>
+                                                <template lwc:if={topic.done}>✓</template>
+                                            </div>
+                                            <span class={topic.nameCls}>{topic.name}</span>
+                                            <span class={topic.arrowCls}>▶</span>
+                                        </div>
+
+                                        <!-- Detail -->
+                                        <template lwc:if={topic.expanded}>
+                                            <div class="topic-detail" style={topicDetailBorderStyle}>
+                                                {topic.detail}
+                                            </div>
+                                        </template>
+
+                                    </div>
+                                </template>
+                            </div>
+
+                        </div>
+                    </template>
+
+                    <!-- Study Tips -->
+                    <div class="study-tips-card">
+                        <div class="study-tips-heading">
+                            {activeLevelEmoji} Study Tips for {activeLevelLabel} — {activeCloudName}
+                        </div>
+                        <div class="tips-grid">
+                            <template for:each={studyTips} for:item="tip">
+                                <div key={tip.title} class="tip-box" style={tipBoxStyle}>
+                                    <div class="tip-title" style={levelColorStyle}>{tip.title}</div>
+                                    <div class="tip-body">{tip.body}</div>
+                                </div>
+                            </template>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+
+            <!-- ══════════════════════════════
+                 RESET MODAL
+            ══════════════════════════════ -->
+            <template lwc:if={showResetModal}>
+                <div class="modal-overlay">
+                    <div class="modal-box">
+                        <div class="modal-icon">🔐</div>
+                        <div class="modal-title">Password Required</div>
+                        <div class="modal-body">
+                            Enter the admin password to reset all progress.
+                            This action is irreversible.
+                        </div>
+                        <div class="modal-input-wrap">
+                            <input
+                                type={passwordFieldType}
+                                class={modalInputCls}
+                                value={resetPassword}
+                                placeholder="Enter password..."
+                                onchange={handlePasswordChange}
+                                onkeydown={handlePasswordKeydown}/>
+                            <button class="eye-btn" onclick={togglePasswordVisibility}>
+                                <template lwc:if={showPassword}>🙈</template>
+                                <template lwc:else>👁️</template>
+                            </button>
+                        </div>
+                        <div class="modal-error">{resetError}</div>
+                        <div class="modal-actions">
+                            <button class="modal-cancel-btn" onclick={closeResetModal}>Cancel</button>
+                            <button class={modalConfirmCls} onclick={confirmReset}>🗑️ Reset All</button>
+                        </div>
+                    </div>
+                </div>
+            </template>
+
+            <!-- ══════════════════════════════
+                 BOTTOM BAR
+            ══════════════════════════════ -->
+            <div class="bottom-bar">
+                <span class="bottom-label">Level Progress</span>
+                <div class="bottom-bars">
+                    <template for:each={clouds} for:item="cl">
+                        <div key={cl.id} class="bottom-bar-track" title={cl.barTitle} data-id={cl.id}
+                            onclick={handleCloudChange}>
+                            <div class="bottom-bar-fill" style={cl.bottomBarStyle}></div>
+                        </div>
+                    </template>
+                </div>
+                <span class="bottom-stats">7 Modules · 21 Phases · {totalAll} Topics</span>
+            </div>
+
+        </template>
+    </div>
+</template>

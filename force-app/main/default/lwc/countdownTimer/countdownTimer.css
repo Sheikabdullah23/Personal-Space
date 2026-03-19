@@ -1,0 +1,417 @@
+/* countdownTimer.css */
+
+/* ══════════════════════════════════
+   WRAPPER
+══════════════════════════════════ */
+.timer-wrapper {
+    background: linear-gradient(145deg, #0b1220 0%, #0e1530 100%);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 18px;
+    padding: 22px 20px 14px;
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: #dde6f5;
+    box-shadow: 0 8px 40px rgba(100, 50, 200, 0.18), 0 0 0 1px rgba(168, 85, 247, 0.06);
+    position: relative;
+    overflow: hidden;
+}
+
+/* subtle glow blob */
+.timer-wrapper::before {
+    content: '';
+    position: absolute;
+    top: -60px;
+    right: -60px;
+    width: 200px;
+    height: 200px;
+    background: radial-gradient(circle, rgba(168, 85, 247, 0.12) 0%, transparent 70%);
+    pointer-events: none;
+}
+
+/* ══════════════════════════════════
+   HEADER
+══════════════════════════════════ */
+.timer-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 18px;
+}
+
+.header-icon {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 16px rgba(168, 85, 247, 0.5);
+    flex-shrink: 0;
+}
+
+.header-eyebrow {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: #a855f7;
+    margin-bottom: 2px;
+}
+
+.header-title {
+    font-size: 14px;
+    font-weight: 800;
+    color: #fff;
+    flex: 1;
+}
+
+.settings-btn {
+    background: rgba(168, 85, 247, 0.1);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: 8px;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 15px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s;
+    flex-shrink: 0;
+}
+
+.settings-btn:hover {
+    background: rgba(168, 85, 247, 0.25);
+}
+
+/* ══════════════════════════════════
+   SETTINGS PANEL
+══════════════════════════════════ */
+.settings-panel {
+    background: rgba(168, 85, 247, 0.06);
+    border: 1px solid rgba(168, 85, 247, 0.2);
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 8px;
+}
+
+.settings-title {
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: #a855f7;
+    margin-bottom: 14px;
+}
+
+.settings-row {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.settings-label {
+    font-size: 11px;
+    font-weight: 600;
+    color: #7a8ea8;
+}
+
+.settings-input {
+    background: rgba(0, 0, 0, 0.35);
+    border: 1px solid rgba(168, 85, 247, 0.25);
+    border-radius: 7px;
+    color: #e0eaf8;
+    font-size: 13px;
+    padding: 8px 10px;
+    outline: none;
+    font-family: inherit;
+    transition: border-color 0.2s;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.settings-input:focus {
+    border-color: rgba(168, 85, 247, 0.6);
+}
+
+.settings-input.small {
+    max-width: 160px;
+}
+
+.save-btn {
+    width: 100%;
+    padding: 10px;
+    background: linear-gradient(135deg, #a855f7, #7c3aed);
+    border: none;
+    border-radius: 9px;
+    color: #fff;
+    font-size: 13px;
+    font-weight: 700;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(168, 85, 247, 0.4);
+    transition: transform 0.18s, box-shadow 0.18s;
+    margin-top: 4px;
+}
+
+.save-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(168, 85, 247, 0.55);
+}
+
+/* ══════════════════════════════════
+   RING
+══════════════════════════════════ */
+.ring-container {
+    position: relative;
+    width: 190px;
+    height: 190px;
+    margin: 0 auto 10px;
+}
+
+.progress-ring {
+    width: 100%;
+    height: 100%;
+}
+
+.ring-inner {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+
+.days-number {
+    font-size: 52px;
+    font-weight: 900;
+    color: #fff;
+    line-height: 1;
+    font-variant-numeric: tabular-nums;
+    background: linear-gradient(135deg, #fff 40%, #a855f7);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+}
+
+.days-label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: #5a6a80;
+    margin-top: 4px;
+}
+
+.percent-badge {
+    margin-top: 6px;
+    background: rgba(168, 85, 247, 0.15);
+    border: 1px solid rgba(168, 85, 247, 0.3);
+    border-radius: 20px;
+    padding: 2px 10px;
+    font-size: 11px;
+    font-weight: 700;
+    color: #a855f7;
+}
+
+/* ══════════════════════════════════
+   LIVE CLOCK
+══════════════════════════════════ */
+.live-clock {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 4px;
+    margin-bottom: 14px;
+}
+
+.clock-block {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: rgba(0, 161, 224, 0.08);
+    border: 1px solid rgba(0, 161, 224, 0.2);
+    border-radius: 8px;
+    padding: 6px 12px;
+    min-width: 48px;
+}
+
+.clock-num {
+    font-size: 20px;
+    font-weight: 800;
+    color: #00a1e0;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.clock-unit {
+    font-size: 8px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    color: #3a5060;
+    margin-top: 2px;
+}
+
+.clock-sep {
+    font-size: 20px;
+    font-weight: 800;
+    color: rgba(0, 161, 224, 0.3);
+    padding-bottom: 10px;
+}
+
+/* ══════════════════════════════════
+   STATS ROW
+══════════════════════════════════ */
+.stats-row {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin-bottom: 12px;
+}
+
+.stat-box {
+    background: rgba(255, 255, 255, 0.03);
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    border-radius: 10px;
+    padding: 10px 6px;
+    text-align: center;
+}
+
+.stat-box.highlight {
+    background: rgba(168, 85, 247, 0.08);
+    border-color: rgba(168, 85, 247, 0.25);
+}
+
+.stat-num {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+}
+
+.stat-label {
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: #3a5060;
+    margin-top: 3px;
+}
+
+/* ══════════════════════════════════
+   DAILY GOAL
+══════════════════════════════════ */
+.daily-goal-box {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background: rgba(0, 161, 224, 0.07);
+    border: 1px solid rgba(0, 161, 224, 0.18);
+    border-radius: 9px;
+    padding: 10px 12px;
+    margin-bottom: 10px;
+}
+
+.daily-goal-icon {
+    font-size: 15px;
+    flex-shrink: 0;
+}
+
+.daily-goal-text {
+    font-size: 12px;
+    font-weight: 600;
+    color: #8ab4cc;
+    line-height: 1.4;
+}
+
+/* ══════════════════════════════════
+   MOTIVATION
+══════════════════════════════════ */
+.motivation-box {
+    background: linear-gradient(135deg, rgba(168, 85, 247, 0.08), rgba(0, 161, 224, 0.05));
+    border: 1px solid rgba(168, 85, 247, 0.15);
+    border-radius: 9px;
+    padding: 10px 14px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.motivation-text {
+    font-size: 11.5px;
+    font-style: italic;
+    color: #9a8ab8;
+    line-height: 1.5;
+}
+
+/* ══════════════════════════════════
+   MILESTONES
+══════════════════════════════════ */
+.milestone-row {
+    display: flex;
+    justify-content: space-between;
+    gap: 6px;
+    margin-bottom: 10px;
+}
+
+.milestone-item {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 4px;
+    opacity: 0.35;
+    transition: opacity 0.3s;
+}
+
+.milestone-item.reached {
+    opacity: 1;
+}
+
+.milestone-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background: rgba(168, 85, 247, 0.3);
+    border: 2px solid rgba(168, 85, 247, 0.4);
+    transition: all 0.3s;
+}
+
+.milestone-item.reached .milestone-dot {
+    background: linear-gradient(135deg, #a855f7, #00a1e0);
+    border-color: #a855f7;
+    box-shadow: 0 0 8px rgba(168, 85, 247, 0.7);
+}
+
+.milestone-label {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    color: #5a6a80;
+}
+
+.milestone-item.reached .milestone-label {
+    color: #a855f7;
+}
+
+/* ══════════════════════════════════
+   FOOTER
+══════════════════════════════════ */
+.timer-footer {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 7px;
+    font-size: 11px;
+    font-weight: 600;
+    color: #4a5a70;
+    padding-top: 8px;
+    border-top: 1px solid rgba(255, 255, 255, 0.04);
+}
+
+.footer-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    flex-shrink: 0;
+}

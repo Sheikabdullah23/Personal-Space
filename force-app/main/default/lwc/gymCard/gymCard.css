@@ -1,0 +1,171 @@
+/* force-app/main/default/lwc/gymCard/gymCard.css */
+.gym-card-wrapper {
+    background: linear-gradient(135deg, #0b1220 0%, #0d1526 100%);
+    border: 1px solid rgba(245, 158, 11, 0.2);
+    border-radius: 16px;
+    padding: 20px;
+    box-shadow: 0 8px 40px rgba(180, 100, 0, 0.12), 0 0 0 1px rgba(245, 158, 11, 0.05);
+    font-family: 'Segoe UI', system-ui, sans-serif;
+    color: #dde6f5;
+    display: flex;
+    flex-direction: column;
+    gap: 0;
+    height: 100%;
+    box-sizing: border-box;
+}
+
+.gc-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 16px;
+}
+
+.gc-logo {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 18px;
+    box-shadow: 0 0 16px rgba(245, 158, 11, 0.4);
+    flex-shrink: 0;
+}
+
+.gc-eyebrow {
+    font-size: 9px;
+    font-weight: 700;
+    letter-spacing: .18em;
+    text-transform: uppercase;
+    color: #f59e0b;
+    margin-bottom: 2px;
+}
+
+.gc-title {
+    font-size: 15px;
+    font-weight: 800;
+    color: #fff;
+}
+
+.gc-divider {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(245, 158, 11, 0.25), transparent);
+    margin: 0 0 14px;
+}
+
+/* Stats */
+.gc-stats {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    background: rgba(245, 158, 11, 0.05);
+    border: 1px solid rgba(245, 158, 11, 0.12);
+    border-radius: 10px;
+    padding: 12px 8px;
+    margin-bottom: 12px;
+}
+
+.gc-stat {
+    text-align: center;
+    flex: 1;
+}
+
+.gc-stat-divider {
+    width: 1px;
+    height: 32px;
+    background: rgba(255, 255, 255, 0.07);
+}
+
+.gc-stat-num {
+    font-size: 20px;
+    font-weight: 900;
+    color: #fff;
+    font-variant-numeric: tabular-nums;
+    line-height: 1;
+}
+
+.gc-stat-streak .gc-stat-num {
+    color: #f59e0b;
+}
+
+.gc-stat-label {
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: #4a5a70;
+    margin-top: 4px;
+}
+
+/* Badges */
+.gc-badges {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 14px;
+    justify-content: center;
+}
+
+.gc-badge {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 1px solid;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    transition: all .2s;
+    cursor: default;
+}
+
+.gc-badge-on {
+    border-color: rgba(245, 158, 11, 0.5);
+    background: rgba(245, 158, 11, 0.12);
+    box-shadow: 0 0 8px rgba(245, 158, 11, 0.25);
+}
+
+.gc-badge-off {
+    border-color: rgba(255, 255, 255, 0.07);
+    background: rgba(255, 255, 255, 0.02);
+    filter: grayscale(1);
+    opacity: .4;
+}
+
+/* Loading */
+.gc-loading {
+    font-size: 12px;
+    color: #3a4a5e;
+    text-align: center;
+    padding: 16px 0;
+}
+
+/* CTA */
+.gc-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    width: 100%;
+    padding: 12px;
+    background: linear-gradient(135deg, #f59e0b, #d97706);
+    border: none;
+    border-radius: 10px;
+    color: #000;
+    font-weight: 800;
+    font-size: 13px;
+    cursor: pointer;
+    box-shadow: 0 4px 16px rgba(245, 158, 11, 0.3);
+    transition: transform .18s, box-shadow .18s;
+    margin-top: auto;
+}
+
+.gc-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 24px rgba(245, 158, 11, 0.5);
+}
+
+.gc-btn-arrow {
+    font-size: 14px;
+}

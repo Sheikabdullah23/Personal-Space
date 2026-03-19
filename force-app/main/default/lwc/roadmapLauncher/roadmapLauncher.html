@@ -1,0 +1,85 @@
+<!-- roadmapLauncher.html -->
+<template>
+    <div class="dashboard-grid">
+
+        <!-- ── Column 1 ── -->
+        <div class="grid-column">
+
+            <!-- Row 1: Roadmap Card -->
+            <div class="grid-cell">
+                <c-countdown-timer></c-countdown-timer>
+            </div>
+
+            <!-- Row 2: Placeholder -->
+            <div class="grid-cell placeholder-cell">
+                <span class="placeholder-icon">＋</span>
+                <span class="placeholder-text">Add Component</span>
+            </div>
+
+        </div>
+
+        <!-- ── Column 2 ── -->
+        <div class="grid-column">
+            <!-- Row 1: Countdown Timer -->
+            <div class="grid-cell">
+                
+                <div class="card-wrapper">
+                    <div class="card-header">
+                        <div class="header-icon">SF</div>
+                        <div>
+                            <div class="header-eyebrow">Complete Developer Journey</div>
+                            <div class="header-title">Salesforce Developer Roadmap</div>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="credentials-section">
+                        <div class="credentials-title">
+                            <span class="lock-icon">🔐</span> Trailhead / Login Credentials (CLAUDE)
+                        </div>
+                        <div class="cred-row">
+                            <span class="cred-label">📧 Gmail</span>
+                            <span class="cred-value">salesminuscule@gmail.com</span>
+                            <button class="copy-btn" onclick={copyEmail} title="Copy email">⎘</button>
+                        </div>
+                        <div class="cred-row">
+                            <span class="cred-label">🔑 Password</span>
+                            <span class="cred-value">Own</span>
+                        </div>
+                    </div>
+
+                    <div class="divider"></div>
+
+                    <div class="btn-area" onclick={openRoadmap}>
+                        <button class="roadmap-btn" onclick={openRoadmap}>
+                            <span class="btn-icon" onclick={openRoadmap}>🚀</span>
+                            Open SF Developer Roadmap
+                            <span class="btn-arrow" onclick={openRoadmap}>↗</span>
+                        </button>
+                    </div>
+
+                    <div class="footer">
+                        7 Modules &nbsp;·&nbsp; 21 Phases &nbsp;·&nbsp; 105 Topics
+                    </div>
+                </div>
+            </div>
+            <div class="grid-cell placeholder-cell">
+                <span class="placeholder-icon">＋</span>
+                <span class="placeholder-text">Add Component</span>
+            </div>
+        </div>
+
+        <!-- ── Column 3 ── -->
+        <div class="grid-column">
+            <div class="grid-cell placeholder-cell">
+                <c-gym-card style="width: stretch;"></c-gym-card>
+            </div>
+            <div class="grid-cell placeholder-cell">
+                <span class="placeholder-icon">＋</span>
+                <span class="placeholder-text">Add Component</span>
+            </div>
+        </div>
+
+    </div>
+</template>
